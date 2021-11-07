@@ -67,7 +67,10 @@ export class Router {
      *  4. Finally, call the stored function for the given page
      */
 
-    //TODO step 1
+    if(!this[page]) {
+      console.log('Error: function does not exist for' + page);
+      return;
+    }
 
     if(page == 'home') {
       var hash = '';
@@ -75,8 +78,15 @@ export class Router {
       var hash = '#' + page;
     }
 
-    if(statePopped == false && window.location.hash != hash) {
-      //history.pushState()
+    if(!statePopped && window.location.hash != hash) {
+      const state = {
+        'page_name' : page
+      }
+      let URL = location + hash;
+      history.pushState(state, '', URL);
+      console.log(history);
     }
+
+    this[page]();
   }
 }
